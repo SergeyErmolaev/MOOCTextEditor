@@ -40,7 +40,21 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean addWord(String word)
 	{
 	    //TODO: Implement this method.
-	    return false;
+		word = word.toLowerCase();
+		TrieNode curr = root;
+		for (char c : word.toCharArray()) {
+			if (curr.getChild(c) == null) {
+				curr.insert(c);
+			}
+			curr = curr.getChild(c);
+		}
+		if (curr.endsWord()) {
+			return false;
+		} else {
+			curr.setEndsWord(true);
+			size++;
+			return true;
+		}
 	}
 	
 	/** 
@@ -50,7 +64,7 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public int size()
 	{
 	    //TODO: Implement this method
-	    return 0;
+		return size;
 	}
 	
 	
@@ -60,7 +74,16 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
 	public boolean isWord(String s) 
 	{
 	    // TODO: Implement this method
-		return false;
+		s = s.toLowerCase();
+		TrieNode curr = root;
+		for (char c : s.toCharArray()) {
+			if (curr.getChild(c) == null) {
+				return false;
+			} else {
+				curr = curr.getChild(c);
+			}
+		}
+		return curr.endsWord();
 	}
 
 	/** 
@@ -101,7 +124,32 @@ public class AutoCompleteDictionaryTrie implements  Dictionary, AutoComplete {
     	 //       Add all of its child nodes to the back of the queue
     	 // Return the list of completions
     	 
-         return null;
+    	 List<String> completions = new LinkedList<String>();
+    	 TrieNode curr = root;
+    	 
+    	 for (char c : prefix.toLowerCase().toCharArray()) {
+			curr = curr.getChild(c);
+			if (curr == null) {
+				return completions;
+			}
+    	 }
+    	 
+    	 LinkedList<TrieNode> queue = new LinkedList<TrieNode>();
+    	 queue.add(curr);
+    	 
+    	 while (!queue.isEmpty() && completions.size() < numCompletions) {
+    		 TrieNode node = queue.removeFirst();
+    		 
+				if (node.endsWord()) {
+					completions.add(node.getText());
+				}
+				
+				for (char c : node.getValidNextCharacters()) {
+					queue.add(node.getChild(c));
+				}
+    	 }
+    	 
+         return completions;
      }
 
  	// For debugging

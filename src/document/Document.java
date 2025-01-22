@@ -67,7 +67,19 @@ public abstract class Document {
 		// TODO: Implement this method so that you can call it from the 
 	    // getNumSyllables method in BasicDocument (module 2) and 
 	    // EfficientDocument (module 3).
-	    return 0;
+		word = word.toLowerCase().replaceAll("e$", ""); // Remove silent 'e'
+		String[] syllables = word.split("[^aeiouy]+"); // Split by non-vowels
+//		int syllableCount = syllables.length;
+		int syllableCount = 0;
+		
+		// If the word starts with a vowel, it will add an empty string to the split array
+		for (String s : syllables) {
+			if (!s.isEmpty()) {
+				syllableCount++;
+			}
+		}
+		
+		return Math.max(syllableCount, 1); // Ensure at least one syllable
 	}
 	
 	/** A method for testing
@@ -132,7 +144,13 @@ public abstract class Document {
 	{
 	    // TODO: You will play with this method in week 1, and 
 		// then implement it in week 2
-	    return text.length();
+		double numWords = (double) getNumWords();
+		double numSentences = (double) getNumSentences();
+		double numSyllables = (double) getNumSyllables();
+		
+		return 206.835 - 1.015 * (numWords / numSentences) - 84.6 * (numSyllables / numWords);
+		
+//	    return text.length();
 	}
 	
 	

@@ -36,7 +36,15 @@ public class BasicDocument extends Document
 	{
 		//TODO: Implement this method in week 2 according to the comments above.  
 		// See the Module 2 support videos if you need help.
-	    return 0;
+		if(getText().length() == 0) {
+            return 0;
+        }
+//		String[] words = getText().split("[^a-zA-Z]+");
+//
+//		return words.length;
+		
+		List<String> words = getTokens("[a-zA-Z]+");
+		return words.size();
 	}
 	
 	/**
@@ -56,7 +64,14 @@ public class BasicDocument extends Document
 	{
 	    //TODO: Implement this method.  See the Module 2 support videos 
         // if you need help.
-        return 0;
+		if (getText().length() == 0) {
+			return 0;
+		}
+//		String[] sentences = getText().split("[.!?]+");
+//		return sentences.length;
+
+		List<String> sentences = getTokens("[^.!?]+");
+		return sentences.size();
 	}
 	
 	/**
@@ -81,7 +96,23 @@ public class BasicDocument extends Document
 		// expression for the syllable counting.  We recommend you implement 
 		// the helper function countSyllables in Document.java using a loop, 
 		// and then call it here on each word.
-        return 0;
+		if (getText().length() == 0) {
+			return 0;
+		}
+//		String[] words = getText().split("[^a-zA-Z]+");
+////		System.out.println(Arrays.toString(words));
+//		int count = 0;
+//		for (String word : words) {
+//			count += countSyllables(word);
+//		}
+//        return count;
+        
+        List<String> words = getTokens("[a-zA-Z]+");
+        int count = 0;
+		for (String word : words) {
+			count += countSyllables(word);
+		}
+		return count;
 	}
 	
 	
